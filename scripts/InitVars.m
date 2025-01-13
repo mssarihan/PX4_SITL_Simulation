@@ -3,7 +3,7 @@
 % Date   : 2025.01.12
 
 %% Quadcopter Coefficients, x Configuration
-Vehicle.Airframe.mass = 1.59;                      % Total Mass [kg]
+Vehicle.Airframe.mass = 1.590;                      % Total Mass [kg]
 Vehicle.Airframe.inertia = [0.0213, 0, 0; 
                             0, 0.0221, 0; 
                             0, 0, 0.028];           % Airframe Inertia [kg*m^2]
