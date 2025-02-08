@@ -96,9 +96,8 @@ ref_lat = 473977420e-7;
 ref_lon = 85455940e-7;
 ref_height = 488;
 
-% Sample Time of Plant and Controller (400-200 Hz)
-SampleTimePlant = 1/400;
-SampleTimeCtrl = 1/100;
+% Sample Time
+SampleTime = 1/100;
 
 
 %% UAV Dynamics Data Serialization Constants
