@@ -41,9 +41,9 @@ control.rotation.vd = 0.2;
 
 %% Control Mixer
 Controller.mechanicalMapper = [1, 1, 1, 1;
-                               -1, 1, 0, 0;
-                               0, 0, 1, -1;                                 
-                               1, 1, -1, -1];
+                               -1, 1, 1, -1;
+                               1, -1, 1, -1;                                 
+                               -1, -1, 1, 1];
 
 Controller.invMechanicalMapper = inv(Controller.mechanicalMapper);
 
@@ -51,18 +51,21 @@ Controller.motorMapper = [Vehicle.Motor.b, ...
                           Vehicle.Motor.b, ...
                           Vehicle.Motor.b, ...
                           Vehicle.Motor.b;
-                          -Vehicle.Motor.b*Vehicle.Airframe.armLength/sqrt(2), ...
-                          Vehicle.Motor.b*Vehicle.Airframe.armLength/sqrt(2), ...
-                          -Vehicle.Motor.b*Vehicle.Airframe.armLength/sqrt(2), ...
-                          Vehicle.Motor.b*Vehicle.Airframe.armLength/sqrt(2);
+
                           -Vehicle.Motor.b*Vehicle.Airframe.armLength/sqrt(2), ...
                           Vehicle.Motor.b*Vehicle.Airframe.armLength/sqrt(2), ...
                           Vehicle.Motor.b*Vehicle.Airframe.armLength/sqrt(2), ...
                           -Vehicle.Motor.b*Vehicle.Airframe.armLength/sqrt(2);
-                          Vehicle.Motor.d, ...
-                          Vehicle.Motor.d, ...
+
+                          Vehicle.Motor.b*Vehicle.Airframe.armLength/sqrt(2), ...
+                          -Vehicle.Motor.b*Vehicle.Airframe.armLength/sqrt(2), ...
+                          Vehicle.Motor.b*Vehicle.Airframe.armLength/sqrt(2), ...
+                          -Vehicle.Motor.b*Vehicle.Airframe.armLength/sqrt(2);
+
                           -Vehicle.Motor.d, ...
-                          -Vehicle.Motor.d];
+                          -Vehicle.Motor.d, ...
+                          Vehicle.Motor.d, ...
+                          Vehicle.Motor.d];
 
 Controller.invMotorMapper = inv(Controller.motorMapper);
 
@@ -80,10 +83,10 @@ init.angRates = [0, 0, 0]; %rad/s
 %Computed from above values
 rotorPositions = zeros(3,4);
 axisD = Vehicle.Airframe.armLength/sqrt(2);
-rotorPositions(:,1) = [axisD, axisD, 0]';           %  4   1
-rotorPositions(:,2) = [-axisD, -axisD, 0]';         %   \ /
-rotorPositions(:,3) = [+axisD, -axisD, 0]';         %   / \
-rotorPositions(:,4) = [-axisD, axisD, 0]';          %  2   3
+rotorPositions(:,1) = [axisD, axisD, 0]';           %  3   1    ^ x
+rotorPositions(:,2) = [-axisD, -axisD, 0]';         %   \ /     |
+rotorPositions(:,3) = [+axisD, -axisD, 0]';         %   / \     |---> y
+rotorPositions(:,4) = [-axisD, axisD, 0]';          %  2   4
 rotorDir = [-1, -1, 1, 1]; %rotation direction. +ve = clockwise
 
 %Reference location: Zurich
@@ -93,8 +96,8 @@ ref_lat = 473977420e-7;
 ref_lon = 85455940e-7;
 ref_height = 488;
 
-% Sample Time of Plant and Controller (400 Hz)
-SampleTime = 1/400;
+% Sample Time
+SampleTime = 1/100;
 
 
 %% UAV Dynamics Data Serialization Constants
